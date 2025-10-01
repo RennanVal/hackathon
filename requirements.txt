@@ -1,0 +1,4 @@
+semantic-kernel
+semantic-kernel[mcp]
+mcp
+openai
