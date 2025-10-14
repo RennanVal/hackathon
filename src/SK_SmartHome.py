@@ -1,19 +1,9 @@
-import os
-import asyncio
 from dataclasses import dataclass, field
-from pydoc import text
 from typing import Dict, Optional
 
-from semantic_kernel.kernel import Kernel
 from semantic_kernel.functions.kernel_function_decorator import kernel_function
 from semantic_kernel.kernel_pydantic import KernelBaseModel
 from pydantic import PrivateAttr
-from semantic_kernel.connectors.ai.prompt_execution_settings import PromptExecutionSettings
-from semantic_kernel.functions.kernel_arguments import KernelArguments
-from semantic_kernel.connectors.ai.function_choice_behavior import FunctionChoiceBehavior
-from semantic_kernel.connectors.ai.open_ai import (
-    AzureChatCompletion,
-)
 
 # ---------------------------
 # Smart Home "Devices" State
