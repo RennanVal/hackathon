@@ -3,3 +3,4 @@ semantic-kernel[mcp]
 mcp
 openai
 python-dotenv
+gradio

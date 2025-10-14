@@ -90,9 +90,9 @@ class SmartHomePlugin(KernelBaseModel):
 # ---------------
 async def main():
     # 0) Azure OpenAI env
-    AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
+    AZURE_OPENAI_ENDPOINT = "https://devinnovationo8144129163.openai.azure.com/"
     AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
-    AZURE_OPENAI_DEPLOYMENT = os.getenv("AZURE_OPENAI_DEPLOYMENT")
+    AZURE_OPENAI_DEPLOYMENT = "gpt-4.1"
 
     # 1) Kernel + Azure service
     kernel = Kernel()
