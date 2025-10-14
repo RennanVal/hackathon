@@ -24,7 +24,7 @@ class SmartHomeState():
         default_factory=lambda: {"living room": False, "kitchen": False, "bedroom": False}
     )
     thermostat_c: float = 20.0
-    doors_locked: bool = False
+    doors_locked: bool = True
     music_playing: Optional[str] = None
 
     def snapshot(self) -> str:
@@ -83,56 +83,3 @@ class SmartHomePlugin(KernelBaseModel):
     def status(self) -> str:
         """Get a human-friendly smart home status."""
         return self._state.snapshot()
-
-
-# ---------------
-# Demo "main"
-# ---------------
-async def main():
-    # 0) Azure OpenAI env
-    AZURE_OPENAI_ENDPOINT = "https://devinnovationo8144129163.openai.azure.com/"
-    AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
-    AZURE_OPENAI_DEPLOYMENT = "gpt-4.1"
-
-    # 1) Kernel + Azure service
-    kernel = Kernel()
-    service = AzureChatCompletion(
-        deployment_name=AZURE_OPENAI_DEPLOYMENT,
-        endpoint=AZURE_OPENAI_ENDPOINT,
-        api_key=AZURE_OPENAI_API_KEY,
-    )
-    kernel.add_service(service)
-
-    # 2) Register plugin (tools)
-    plugin = SmartHomePlugin()
-    kernel.add_plugin(plugin, plugin_name="home")
-    
-    arguments = KernelArguments(
-        settings=PromptExecutionSettings(
-            function_choice_behavior=FunctionChoiceBehavior.Auto(filters={"included_plugins": ["home"]}),
-        )
-    )
-
-
-    async def ask(prompt: str):
-        print(f"\nUser: {prompt}")
-        response = await kernel.invoke_prompt(prompt, arguments=arguments)
-        print(str(response))
-
-    # Show initial state (direct call just for intro)
-    print("=== INITIAL STATE ===")
-    print(plugin._state.snapshot())
-
-    print("\n=== AGENT (auto tool-calling) ===")
-    await ask("Turn on the kitchen lights and set the temperature to 26.")
-    await ask("What's the status now?")
-    await ask("Lock the doors and play jazz music.")
-    await ask("What's the status now?")
-    await ask("Switch off the kitchen light and stop the music.")
-
-    print("\n=== FINAL STATE ===")
-    print(plugin._state.snapshot())
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
